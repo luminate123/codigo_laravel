@@ -1,13 +1,19 @@
 "use client"
+import { Button } from "@nextui-org/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function Tallereslayout({ children }: { children: React.ReactNode }) {
 
+
     const pathname = usePathname()
     return <>
-
+        <div>
+            <Button as={Link} color="primary" href="/servicios/nuevoServicio" variant="flat">
+                Crear Servicio
+            </Button>
+        </div>
         <nav>
             <Link href={'/servicios'} className={`text-2xl font-semibold ${pathname === '/servicios' ? 'text-red-600' : ''}`}  >Seccion Servicio</Link>
 
