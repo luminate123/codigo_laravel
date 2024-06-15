@@ -6,6 +6,16 @@ import { useEffect, useState } from "react";
 
 export default function Tallereslayout({ children }: { children: React.ReactNode }) {
 
+    const [services, setServices] = useState<{ id: number; titulo: string; }[]>([]);
+
+    useEffect(() => {
+        fetch('http://localhost:3000/api/services')
+            .then(response => response.json())
+            .then(data => {
+                setServices(data);
+
+            });
+    }, []);
 
     const pathname = usePathname()
     return <>
@@ -14,26 +24,25 @@ export default function Tallereslayout({ children }: { children: React.ReactNode
                 Crear Servicio
             </Button>
         </div>
-        <nav>
-            <Link href={'/servicios'} className={`text-2xl font-semibold ${pathname === '/servicios' ? 'text-red-600' : ''}`}  >Seccion Servicio</Link>
 
-            <ul>
-                <li>
-                    <Link href={'/servicios/1'} className={`${pathname === '/servicios/1' ? 'text-blue-600' : ''}`}>Mantenimiento</Link>
-                </li>
-                <li>
-                    <Link href={'/servicios/2'} className={`${pathname === '/servicios/2' ? 'text-blue-600' : ''}`}>Afinamiento</Link>
-                </li>
-                <li>
-                    <Link href={'/servicios/3'} className={`${pathname === '/servicios/3' ? 'text-blue-600' : ''}`}>Cambio de Aceite</Link>
-                </li>
-                <li>
-                    <Link href={'/servicios/4'} className={`${pathname === '/servicios/4' ? 'text-blue-600' : ''}`}>Lavado tipo salón</Link>
-                </li>
-            </ul>
+        <div className=' text-2xl '>
+            <div className='text-4xl font-semibold'>Servicios Page</div>
+            <nav>
 
-        </nav>
-        {children}
+                <ul>
+                    {services.map(services => (
+                        <li>
+                            <Link href={`/servicios/${services.id}`} className={`${pathname === `/servicios/${services.id}` ? 'text-blue-600' : ''}`}>{services.titulo}</Link>
+                        </li>
+                    ))}
+                </ul>
+            </nav>
+
+        </div>
+
+        <div className="grid justify-items-center">
+            {children}
+        </div>
 
     </>
 }
