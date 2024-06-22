@@ -1,7 +1,8 @@
-import { Controller, Get, Param, ParseIntPipe, Post, Body,BadRequestException  } from '@nestjs/common';
+import { Controller, Get, Param, ParseIntPipe, Post, Body,BadRequestException, Delete, Patch  } from '@nestjs/common';
 import { ServicesService } from './services.service';
 import { Service } from './service.entity';
 import { CreateServiceDto } from './dto/create-service.dto';
+import { UpdateServiceDto } from './dto/update-service.dto';
 
 @Controller('api/services')
 export class ServicesController {
@@ -26,5 +27,14 @@ export class ServicesController {
         return this.ServicesService.getUser(id)
     }
 
+    @Delete(':id')
+    deleteService(@Param('id', ParseIntPipe) id: number) {
+        return this.ServicesService.deleteService(id)
+    }
+
+    @Patch(':id')
+    updateService(@Param('id', ParseIntPipe) id: number, @Body() service: UpdateServiceDto) {
+        return this.ServicesService.updateService(id, service)
+    }
 
 }

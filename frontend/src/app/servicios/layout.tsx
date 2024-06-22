@@ -9,7 +9,7 @@ export default function Tallereslayout({ children }: { children: React.ReactNode
     const [services, setServices] = useState<{ id: number; titulo: string; }[]>([]);
 
     useEffect(() => {
-        fetch('http://localhost:3000/api/services')
+        fetch('http://localhost:3000/api/services', { next: { revalidate: 0 } })
             .then(response => response.json())
             .then(data => {
                 setServices(data);

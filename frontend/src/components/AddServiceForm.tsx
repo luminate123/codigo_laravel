@@ -1,21 +1,47 @@
 "use client"
 import { Button } from '@nextui-org/react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useRouter, usePathname } from "next/navigation";
 
-const AddServiceForm = () => {
+const ServiceForm = () => {
   const [titulo, setTitulo] = useState('');
   const [descripcion, setDescripcion] = useState('');
   const [error, setError] = useState('');
+  const router = useRouter();
+  const pathname = usePathname();
+  const isUpdate = pathname.includes('actualizarServicio');
+  const serviceId = pathname.split('/').pop(); // Obtener el ID del servicio de la URL
+
+  useEffect(() => {
+    if (isUpdate && serviceId) {
+      // Fetch existing service data and set it to state
+      const fetchService = async () => {
+        const response = await fetch(`http://localhost:3000/api/services/${serviceId}`);
+        if (response.ok) {
+          const data = await response.json();
+          setTitulo(data.titulo);
+          setDescripcion(data.descripcion);
+        } else {
+          setError('Failed to fetch service data.');
+        }
+      };
+
+      fetchService();
+    }
+  }, [isUpdate, serviceId]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const url = isUpdate ? `http://localhost:3000/api/services/${serviceId}` : 'http://localhost:3000/api/services';
+    const method = isUpdate ? 'PATCH' : 'POST';
+    const updatedAt = new Date().toISOString(); // Obtener la hora actual en formato ISO
 
-    const response = await fetch('http://localhost:3000/api/services', {
-      method: 'POST',
+    const response = await fetch(url, {
+      method,
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ titulo, descripcion }),
+      body: JSON.stringify({ titulo, descripcion, updated_at: updatedAt }),
     });
 
     if (response.ok) {
@@ -23,7 +49,12 @@ const AddServiceForm = () => {
       setTitulo('');
       setDescripcion('');
       setError('');
-      // Handle successful response, e.g., show a success message
+      // Redirigir a la página de servicios
+      router.push('/servicios');
+      // Refrescar la página después de un pequeño retraso
+      setTimeout(() => {
+        window.location.reload();
+      }, 500); // Ajusta el retraso según sea necesario
     } else {
       const errorData = await response.json();
       setError(errorData.message);
@@ -72,9 +103,9 @@ const AddServiceForm = () => {
         </div>
       </div>
       {error && <p style={{ color: 'red' }}>{error}</p>}
-      <Button type="submit">Add Service</Button>
+      <Button type="submit">{isUpdate ? 'Update Service' : 'Add Service'}</Button>
     </form>
   );
 };
 
-export default AddServiceForm;
+export default ServiceForm;
