@@ -1,3 +1,4 @@
+import BotomDelete from "@/components/BotomDelete";
 import { Button } from "@nextui-org/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -17,6 +18,7 @@ async function load(id: any) {
     }
 }
 
+
 async function page({ params }: { params: { serviceId: number } }) {
     const service = await load(params.serviceId);
 
@@ -31,6 +33,8 @@ async function page({ params }: { params: { serviceId: number } }) {
             <p>Created at: {new Date(service.created_at).toLocaleString()}</p>
             <p>Updated at: {new Date(service.updated_at).toLocaleString()}</p>
             <Button as={Link} href={`/servicios/actualizarServicio/${service.id}`}>Actualizar Servicio</Button>
+            <BotomDelete />
+            
         </div>
     );
 }
