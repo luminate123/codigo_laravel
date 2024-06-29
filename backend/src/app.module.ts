@@ -3,6 +3,8 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ServicesModule } from './services/services.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ContactoService } from './contacto/contacto.service';
+import { ContactoModule } from './contacto/contacto.module';
 
 @Module({
   imports: [
@@ -16,8 +18,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true,
     }),
-    ServicesModule],
+    ServicesModule,
+    ContactoModule],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, ContactoService],
 })
 export class AppModule { }
