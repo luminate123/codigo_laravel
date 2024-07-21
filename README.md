@@ -2,6 +2,16 @@ Backend - Nest.js - base de datos en mysql
 
 Frontend - Next.js
 
+
+last commit - 28/06/2024
+
+
+https://github.com/luminate123/codigo_laravel/assets/87740017/3131a603-c757-4c1b-9214-4343f843f61f
+
+
+
+
+
 last commit - 14/06/2024:
 
 
