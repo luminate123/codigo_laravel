@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ContactoService } from './contacto/contacto.service';
 import { ContactoModule } from './contacto/contacto.module';
 
+
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -19,7 +20,8 @@ import { ContactoModule } from './contacto/contacto.module';
       synchronize: true,
     }),
     ServicesModule,
-    ContactoModule],
+    ContactoModule
+    ],
   controllers: [AppController],
   providers: [AppService, ContactoService],
 })
