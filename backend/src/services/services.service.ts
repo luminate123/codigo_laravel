@@ -13,6 +13,7 @@ export class ServicesService {
         if (!service.titulo || !service.descripcion) {
             throw new Error('Titulo y descripcion son requeridos')
         }
+    
         const newService = this.serviceRepository.create(service)
         return this.serviceRepository.save(newService)
     }

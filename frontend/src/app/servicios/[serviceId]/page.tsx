@@ -18,7 +18,6 @@ async function load(id: any) {
     }
 }
 
-
 async function page({ params }: { params: { serviceId: number } }) {
     const service = await load(params.serviceId);
 
@@ -32,9 +31,11 @@ async function page({ params }: { params: { serviceId: number } }) {
             <p>Description: {service.descripcion}</p>
             <p>Created at: {new Date(service.created_at).toLocaleString()}</p>
             <p>Updated at: {new Date(service.updated_at).toLocaleString()}</p>
+            {service.imagen && (
+                <img src={service.imagen} alt={service.titulo} />
+            )}
             <Button as={Link} href={`/servicios/actualizarServicio/${service.id}`}>Actualizar Servicio</Button>
             <BotomDelete />
-            
         </div>
     );
 }

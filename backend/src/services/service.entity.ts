@@ -8,6 +8,10 @@ export class Service {
     titulo: string
     @Column()
     descripcion: string
+
+    @Column({ nullable: true })
+    imagen: string | null;
+
     @Column({ type: "datetime", default: () => "CURRENT_TIMESTAMP" })
     created_at: Date
     @Column({ type: "datetime", default: () => "CURRENT_TIMESTAMP" })

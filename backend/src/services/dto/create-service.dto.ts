@@ -7,4 +7,7 @@ export class CreateServiceDto {
 
     @IsNotEmpty()
     descripcion: string
+
+    @IsNotEmpty()
+    imagen: string
 }

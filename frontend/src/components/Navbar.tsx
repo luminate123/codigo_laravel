@@ -16,11 +16,12 @@ export default function functionNavbarComponent() {
             </NavbarBrand>
             <NavbarContent justify="end" >
                 {session?.user ?
-                <><NavbarItem>
+                    <><NavbarItem>
                         <Link href="/home" className={`${pathname === '/home' ? 'text-blue-600' : ''}`}>
                             Home
                         </Link>
-                    </NavbarItem><NavbarItem>
+                    </NavbarItem>
+                        <NavbarItem>
                             <Link href="/nosotros" className={`${pathname === '/programas' ? 'text-blue-600' : ''}`}>
                                 Nosotros
                             </Link>

@@ -6,6 +6,7 @@ import { useRouter, usePathname } from "next/navigation";
 const ServiceForm = () => {
   const [titulo, setTitulo] = useState('');
   const [descripcion, setDescripcion] = useState('');
+  const [file, setFile] = useState(null);
   const [error, setError] = useState('');
   const router = useRouter();
   const pathname = usePathname();
@@ -36,18 +37,24 @@ const ServiceForm = () => {
     const method = isUpdate ? 'PATCH' : 'POST';
     const updatedAt = new Date().toISOString(); // Obtener la hora actual en formato ISO
 
+    const formData = new FormData();
+    formData.append('titulo', titulo);
+    formData.append('descripcion', descripcion);
+    formData.append('updated_at', updatedAt);
+    if (file) {
+      formData.append('image', file);
+    }
+
     const response = await fetch(url, {
       method,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ titulo, descripcion, updated_at: updatedAt }),
+      body: formData,
     });
 
     if (response.ok) {
       // Clear form and reset state
       setTitulo('');
       setDescripcion('');
+      setFile(null);
       setError('');
       // Redirigir a la página de servicios
       router.push('/servicios');
@@ -65,14 +72,14 @@ const ServiceForm = () => {
     <form onSubmit={handleSubmit}>
       <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
         <div className="sm:col-span-4">
-          <label htmlFor="Titule" className="block text-sm font-medium leading-6 text-gray-900">
+          <label htmlFor="titulo" className="block text-sm font-medium leading-6 text-gray-900">
             Titulo
           </label>
           <div className="mt-2">
             <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
               <input
                 type="text"
-                name="Titule"
+                name="titulo"
                 id="titulo"
                 value={titulo}
                 onChange={(e) => setTitulo(e.target.value)}
@@ -85,7 +92,7 @@ const ServiceForm = () => {
         </div>
 
         <div className="col-span-full">
-          <label htmlFor="description" className="block text-sm font-medium leading-6 text-gray-900">
+          <label htmlFor="descripcion" className="block text-sm font-medium leading-6 text-gray-900">
             Descripción
           </label>
           <div className="mt-2">
@@ -94,10 +101,25 @@ const ServiceForm = () => {
               value={descripcion}
               onChange={(e) => setDescripcion(e.target.value)}
               required
-              name="description"
+              name="descripcion"
               rows={1}
               className="block w-96 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               placeholder="Mantenimiento de vehículos a gasolina y diésel."
+            />
+          </div>
+        </div>
+        <div className="col-span-full">
+          <label htmlFor="file" className="block text-sm font-medium leading-6 text-gray-900">
+            Imagen
+          </label>
+          <div className="mt-2">
+            <input
+              type="file"
+              id="file"
+              onChange={(e) => setFile(e.target.files[0])}
+              required
+              accept="image/*" // Add accept attribute to only allow image files
+              className="block w-96 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
             />
           </div>
         </div>
